@@ -1,0 +1,10 @@
+[Unit]
+Description=Foxboard Gmail Import
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/foxboard
+EnvironmentFile=/etc/foxboard.env
+ExecStart=/usr/bin/npm run ingest:gmail
+User=foxboard

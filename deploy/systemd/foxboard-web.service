@@ -1,0 +1,14 @@
+[Unit]
+Description=Foxboard Web
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/foxboard
+EnvironmentFile=/etc/foxboard.env
+ExecStart=/usr/bin/npm run start
+Restart=always
+User=foxboard
+
+[Install]
+WantedBy=multi-user.target

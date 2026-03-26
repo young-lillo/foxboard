@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Foxboard Gmail import every 30 minutes
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=30m
+Unit=foxboard-ingest.service
+
+[Install]
+WantedBy=timers.target

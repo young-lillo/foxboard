@@ -1,0 +1,12 @@
+process.env.APP_URL ??= "http://localhost:3000";
+process.env.DATABASE_URL ??= "postgres://postgres:postgres@localhost:5432/foxboard";
+process.env.AUTH_SECRET ??= "test-secret-value-123456";
+process.env.GOOGLE_CLIENT_ID ??= "test-google-client-id";
+process.env.GOOGLE_CLIENT_SECRET ??= "test-google-client-secret";
+process.env.GOOGLE_REFRESH_TOKEN ??= "test-google-refresh-token";
+process.env.ALLOWED_EMAIL_DOMAIN ??= "example.com";
+process.env.GMAIL_USER ??= "reports@example.com";
+process.env.GMAIL_QUERY ??= "subject:(Daily Report)";
+process.env.REPORT_STORAGE_DIR ??= "./storage/imports";
+process.env.REPORT_RETENTION_DAYS ??= "3";
+process.env.REPORT_HOST_ALLOWLIST ??= "desk.thetradedesk.com";

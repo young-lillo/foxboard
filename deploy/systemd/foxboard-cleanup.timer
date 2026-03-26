@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Foxboard file cleanup daily
+
+[Timer]
+OnBootSec=10m
+OnCalendar=daily
+Unit=foxboard-cleanup.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=Foxboard import cleanup
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/foxboard
+EnvironmentFile=/etc/foxboard.env
+ExecStart=/usr/bin/npm run cleanup:imports
+User=foxboard

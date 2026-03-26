@@ -1,0 +1,40 @@
+{
+  "name": "foxboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "cross-env FOXBOARD_ALLOW_ENV_DEFAULTS=1 next build",
+    "start": "next start",
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "ingest:gmail": "tsx scripts/run-gmail-import.ts",
+    "cleanup:imports": "tsx scripts/cleanup-import-files.ts"
+  },
+  "dependencies": {
+    "csv-parse": "^5.6.0",
+    "googleapis": "^144.0.0",
+    "next": "^15.3.0",
+    "next-auth": "^5.0.0-beta.29",
+    "pg": "^8.16.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/pg": "^8.15.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitest/coverage-v8": "^3.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "^15.3.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}
