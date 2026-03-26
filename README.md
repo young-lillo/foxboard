@@ -17,13 +17,6 @@ Internal campaign monitoring app.
 3. CSV rows are validated and upserted into `campaign_daily_metrics`.
 4. Dashboard shows flagged adgroups where `bid_cpm < media_cpm`.
 
-## Listening Room
-
-- `/listen` is one internal shared room backed by YouTube URLs and Postgres state.
-- Any signed-in user can queue a single YouTube video URL.
-- Only admins can play, pause, and skip.
-- Sync is intentionally soft: server anchor + polling + heartbeat, not realtime transport.
-
 ## Commands
 
 ```bash
@@ -62,6 +55,12 @@ Copy `.env.example` to `.env` and fill:
 
 `npm run build` sets `FOXBOARD_ALLOW_ENV_DEFAULTS=1` so build can complete in CI/local without secrets. Runtime (`npm run start`, ingest timers) still requires real env values.
 
+For Ubuntu `/etc/foxboard.env`, quote `GMAIL_QUERY` because it contains spaces:
+
+```env
+GMAIL_QUERY='from:(noreply@thetradedesk.com) subject:("Report Available: Daily Report")'
+```
+
 ## Auth
 
 - Google only
@@ -76,6 +75,8 @@ Import job uses a separate Google OAuth refresh token from the app login flow.
 - OAuth scope needed: `https://www.googleapis.com/auth/gmail.readonly`
 - mailbox should match `GMAIL_USER`
 - refresh token should be generated for the import mailbox or delegated account
+- query should target the sender `noreply@thetradedesk.com`
+- importer only fetches the latest matching email
 
 ## Deploy
 

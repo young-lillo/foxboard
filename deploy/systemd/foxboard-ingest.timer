@@ -1,9 +1,11 @@
 [Unit]
-Description=Run Foxboard Gmail import every 30 minutes
+Description=Run Foxboard Gmail import 3 times between 09:00 and 10:00 Melbourne time
 
 [Timer]
-OnBootSec=2m
-OnUnitActiveSec=30m
+OnCalendar=*-*-* 09:00:00
+OnCalendar=*-*-* 09:20:00
+OnCalendar=*-*-* 09:40:00
+Persistent=true
 Unit=foxboard-ingest.service
 
 [Install]

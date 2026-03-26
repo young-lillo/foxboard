@@ -13,6 +13,13 @@ Expected output fields:
 - `skipped`
 - `failed`
 
+Current ingest assumptions:
+
+- sender is `noreply@thetradedesk.com`
+- query targets `Report Available: Daily Report`
+- only the latest matching email is fetched
+- scheduled runs happen 3 times between `09:00` and `10:00` Melbourne time
+
 ## Cleanup Old CSV
 
 ```bash

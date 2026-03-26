@@ -11,41 +11,36 @@ export async function listCandidateMessages() {
   auth.setCredentials({ refresh_token: env.GOOGLE_REFRESH_TOKEN });
   await auth.getAccessToken();
   const gmail = google.gmail({ version: "v1", auth });
-  const hydrated: GmailMessage[] = [];
-  let pageToken: string | undefined;
+  const list = await gmail.users.messages.list({
+    userId: env.GMAIL_USER,
+    q: env.GMAIL_QUERY,
+    maxResults: 1
+  });
+  const latestMessage = list.data.messages?.[0];
 
-  do {
-    const list = await gmail.users.messages.list({
-      userId: env.GMAIL_USER,
-      q: env.GMAIL_QUERY,
-      maxResults: 50,
-      pageToken
-    });
+  if (!latestMessage?.id) {
+    return [];
+  }
 
-    for (const item of list.data.messages ?? []) {
-      const detail = await gmail.users.messages.get({
-        userId: env.GMAIL_USER,
-        id: item.id!,
-        format: "full"
-      });
+  const detail = await gmail.users.messages.get({
+    userId: env.GMAIL_USER,
+    id: latestMessage.id,
+    format: "full"
+  });
 
-      const payload = detail.data.payload;
-      const body =
-        payload?.parts?.map((part) => decodeBody(part.body?.data)).join("\n") ??
-        decodeBody(payload?.body?.data);
+  const payload = detail.data.payload;
+  const body =
+    payload?.parts?.map((part) => decodeBody(part.body?.data)).join("\n") ??
+    decodeBody(payload?.body?.data);
 
-      hydrated.push({
-        id: detail.data.id!,
-        threadId: detail.data.threadId!,
-        internalDate: Number(detail.data.internalDate ?? Date.now()),
-        body
-      });
+  return [
+    {
+      id: detail.data.id!,
+      threadId: detail.data.threadId!,
+      internalDate: Number(detail.data.internalDate ?? Date.now()),
+      body
     }
-
-    pageToken = list.data.nextPageToken ?? undefined;
-  } while (pageToken && hydrated.length < 250);
-
-  return hydrated;
+  ];
 }
 
 function decodeBody(value?: string | null) {
