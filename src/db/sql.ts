@@ -1,6 +1,8 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
+import { PoolClient } from "pg";
+
 import { pool } from "@/db/pool";
 
 const MIGRATION_TABLE_SQL = `
@@ -45,6 +47,22 @@ export async function runMigrations() {
         throw error;
       }
     }
+  } finally {
+    client.release();
+  }
+}
+
+export async function withTransaction<T>(callback: (client: PoolClient) => Promise<T>) {
+  const client = await pool.connect();
+
+  try {
+    await client.query("begin");
+    const result = await callback(client);
+    await client.query("commit");
+    return result;
+  } catch (error) {
+    await client.query("rollback");
+    throw error;
   } finally {
     client.release();
   }

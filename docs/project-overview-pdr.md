@@ -11,6 +11,7 @@ Team needs a fast internal app to detect adgroups where bid CPM is lower than me
 - Google Workspace login only
 - flagged-first dashboard
 - import history for admins
+- one internal `/listen` room with shared queue and soft-sync playback
 
 ## Out Of Scope
 
@@ -18,3 +19,4 @@ Team needs a fast internal app to detect adgroups where bid CPM is lower than me
 - realtime alerts
 - heavy BI analytics
 - multi-tenant support
+- multi-room listening

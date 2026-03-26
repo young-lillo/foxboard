@@ -115,6 +115,10 @@ select {
   background: #fff;
 }
 
+.input-grow {
+  flex: 1 1 340px;
+}
+
 .button {
   min-height: 42px;
   border: none;
@@ -123,6 +127,11 @@ select {
   color: #fff;
   background: var(--text);
   cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .button-secondary {
@@ -149,6 +158,20 @@ select {
   font-size: 13px;
 }
 
+.listen-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+  align-items: start;
+}
+
+.queue-item {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
 @media (max-width: 720px) {
   .shell {
     padding-inline: 14px;
@@ -156,5 +179,9 @@ select {
 
   .table {
     font-size: 14px;
+  }
+
+  .listen-grid {
+    grid-template-columns: 1fr;
   }
 }

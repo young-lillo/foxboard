@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 
 type AppSession = Session & {
   user: NonNullable<Session["user"]> & {
+    id: string;
     email: string;
     role: "admin" | "viewer";
   };
@@ -13,7 +14,7 @@ type AppSession = Session & {
 export async function requireSession(): Promise<AppSession> {
   const session = await auth();
 
-  if (!session?.user?.email) {
+  if (!session?.user?.email || !session.user.id) {
     redirect("/login");
   }
 

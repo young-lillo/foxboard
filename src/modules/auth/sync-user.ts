@@ -9,6 +9,20 @@ type SyncUserInput = {
   image: string | null;
 };
 
+export async function getUserByEmail(email: string): Promise<UserRecord | null> {
+  const result = await pool.query<UserRecord>(
+    `
+      select id, email, name, image, role
+      from users
+      where email = $1
+      limit 1
+    `,
+    [email]
+  );
+
+  return result.rows[0] ?? null;
+}
+
 export async function syncUser(input: SyncUserInput): Promise<UserRecord> {
   const result = await pool.query<UserRecord>(
     `

@@ -15,6 +15,9 @@ export function AppHeader({ role, email }: AppHeaderProps) {
         <Link href="/dashboard">
           <strong>Foxboard</strong>
         </Link>
+        <Link className="muted" href="/listen">
+          Listen
+        </Link>
         <Link className="muted" href="/imports">
           Import history
         </Link>

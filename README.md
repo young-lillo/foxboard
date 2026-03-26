@@ -17,6 +17,13 @@ Internal campaign monitoring app.
 3. CSV rows are validated and upserted into `campaign_daily_metrics`.
 4. Dashboard shows flagged adgroups where `bid_cpm < media_cpm`.
 
+## Listening Room
+
+- `/listen` is one internal shared room backed by YouTube URLs and Postgres state.
+- Any signed-in user can queue a single YouTube video URL.
+- Only admins can play, pause, and skip.
+- Sync is intentionally soft: server anchor + polling + heartbeat, not realtime transport.
+
 ## Commands
 
 ```bash

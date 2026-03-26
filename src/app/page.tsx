@@ -18,6 +18,9 @@ export default async function HomePage() {
           <Link className="button" href={session ? "/dashboard" : "/login"}>
             {session ? "Open dashboard" : "Sign in"}
           </Link>
+          <Link className="button button-secondary" href={session ? "/listen" : "/login"}>
+            Open listening room
+          </Link>
           <Link className="button button-secondary" href="/imports">
             Import history
           </Link>
