@@ -1,4 +1,10 @@
-import { ListeningRoomQueueItem } from "@/modules/listen/types";
+import Image from "next/image";
+
+import {
+  getListeningItemTitle,
+  getYoutubeThumbnailUrl,
+  ListeningRoomQueueItem
+} from "@/modules/listen/types";
 
 export function ListeningRoomQueue({ items }: { items: ListeningRoomQueueItem[] }) {
   return (
@@ -13,10 +19,22 @@ export function ListeningRoomQueue({ items }: { items: ListeningRoomQueueItem[] 
         <div className="stack" style={{ gap: 12 }}>
           {items.map((item, index) => (
             <article className="queue-item" key={item.id}>
-              <strong>
-                {index + 1}. {item.titleSnapshot ?? item.sourceUrl}
-              </strong>
-              <span className="muted">Added by {item.addedByDisplayName}</span>
+              <div className="queue-track">
+                <Image
+                  alt={getListeningItemTitle(item)}
+                  className="queue-track__image"
+                  height={54}
+                  loading="lazy"
+                  src={getYoutubeThumbnailUrl(item.youtubeVideoId)}
+                  width={96}
+                />
+                <div className="stack" style={{ gap: 4 }}>
+                  <strong className="track-title">
+                    {index + 1}. {getListeningItemTitle(item)}
+                  </strong>
+                  <span className="muted">Added by {item.addedByDisplayName}</span>
+                </div>
+              </div>
             </article>
           ))}
         </div>

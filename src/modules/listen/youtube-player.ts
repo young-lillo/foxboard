@@ -5,6 +5,7 @@ type YoutubePlayerApi = {
   pauseVideo(): void;
   seekTo(seconds: number, allowSeekAhead: boolean): void;
   getCurrentTime(): number;
+  getVolume(): number;
   getVideoData(): { title?: string };
   destroy(): void;
   unMute(): void;
@@ -77,6 +78,8 @@ export type YoutubePlayerController = {
   pause(): void;
   seekTo(seconds: number): void;
   getCurrentTime(): number;
+  getVolume(): number;
+  setVolume(volume: number): number;
   getTitle(): string | null;
   destroy(): void;
 };
@@ -124,6 +127,19 @@ export async function createYoutubePlayer(
             },
             getCurrentTime() {
               return player.getCurrentTime();
+            },
+            getVolume() {
+              return player.getVolume();
+            },
+            setVolume(volume) {
+              const nextVolume = Math.max(0, Math.min(100, volume));
+
+              if (nextVolume > 0) {
+                player.unMute();
+              }
+
+              player.setVolume(nextVolume);
+              return nextVolume;
             },
             getTitle() {
               return player.getVideoData().title?.trim() || null;

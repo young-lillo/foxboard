@@ -39,3 +39,13 @@ export type ListeningRoomSnapshot = {
   };
   queue: ListeningRoomQueueItem[];
 };
+
+export function getListeningItemTitle(
+  item: Pick<ListeningRoomQueueItem, "titleSnapshot" | "sourceUrl">
+) {
+  return item.titleSnapshot?.trim() || item.sourceUrl;
+}
+
+export function getYoutubeThumbnailUrl(videoId: string) {
+  return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+}

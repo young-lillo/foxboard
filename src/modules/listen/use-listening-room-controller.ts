@@ -22,6 +22,7 @@ function getExpectedPosition(state: ListeningRoomSnapshot, snapshotReceivedAt: n
 export function useListeningRoomController(initialState: ListeningRoomSnapshot, role: Role) {
   const [roomState, setRoomState] = useState(initialState);
   const [hasJoined, setHasJoined] = useState(false);
+  const [playerVolume, setPlayerVolume] = useState(100);
   const [statusMessage, setStatusMessage] = useState("");
   const [playerError, setPlayerError] = useState("");
   const [isRefreshing, startTransition] = useTransition();
@@ -64,6 +65,7 @@ export function useListeningRoomController(initialState: ListeningRoomSnapshot, 
           void handleTrackEnded();
         }
       });
+      setPlayerVolume(playerRef.current.getVolume());
     }
     const currentItem = roomState.playback.currentItem;
     if (!currentItem) {
@@ -149,6 +151,7 @@ export function useListeningRoomController(initialState: ListeningRoomSnapshot, 
     hasJoined,
     isRefreshing,
     playerError,
+    playerVolume,
     playerHostRef,
     statusMessage,
     joinRoom() {
@@ -190,6 +193,20 @@ export function useListeningRoomController(initialState: ListeningRoomSnapshot, 
           setStatusMessage(error instanceof Error ? error.message : "Skip failed");
         });
       });
+    },
+    increaseVolume() {
+      if (!playerRef.current) {
+        return;
+      }
+
+      setPlayerVolume(playerRef.current.setVolume(playerVolume + 10));
+    },
+    decreaseVolume() {
+      if (!playerRef.current) {
+        return;
+      }
+
+      setPlayerVolume(playerRef.current.setVolume(playerVolume - 10));
     }
   };
 }
