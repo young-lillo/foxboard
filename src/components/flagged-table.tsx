@@ -1,5 +1,5 @@
 type FlaggedRow = {
-  metric_date: string;
+  metric_date: string | Date;
   campaign: string;
   adgroup: string;
   contract: string;
@@ -49,8 +49,10 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={`${row.metric_date}-${row.campaign}-${row.adgroup}-${row.contract}`}>
-                <td>{row.metric_date}</td>
+              <tr
+                key={`${formatMetricDate(row.metric_date)}-${row.campaign}-${row.adgroup}-${row.contract}`}
+              >
+                <td>{formatMetricDate(row.metric_date)}</td>
                 <td>{row.campaign}</td>
                 <td>{row.adgroup}</td>
                 <td>{row.contract}</td>
@@ -72,4 +74,12 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
       </div>
     </section>
   );
+}
+
+function formatMetricDate(value: string | Date) {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  return value;
 }

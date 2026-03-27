@@ -10,7 +10,7 @@ export async function getFlaggedAdgroups(filters: MetricsFilters) {
   const result = await pool.query(
     `
       select
-        metric_date,
+        metric_date::text as metric_date,
         campaign,
         adgroup,
         contract,
