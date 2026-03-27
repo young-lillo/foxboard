@@ -32,6 +32,12 @@ npm run cleanup:imports
 update users set role = 'admin' where email = 'user@example.com';
 ```
 
+Allowed login domains can be set in `/etc/foxboard.env`:
+
+```env
+ALLOWED_EMAIL_DOMAIN=foxcatcher.com.au,labelium.com
+```
+
 ## Import Failure Triage
 
 1. Check latest runs from `/imports` page (admin only).

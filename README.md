@@ -64,10 +64,16 @@ GMAIL_QUERY='from:(noreply@thetradedesk.com) subject:("Report Available: Daily R
 ## Auth
 
 - Google only
-- company domain only
+- company domain only, supports comma-separated domains
 - first users default to `viewer`
 - admin must be promoted in DB
 - production auth trusts the host headers forwarded by Caddy
+
+Example:
+
+```env
+ALLOWED_EMAIL_DOMAIN=foxcatcher.com.au,labelium.com
+```
 
 ## Gmail Ingest Credentials
 

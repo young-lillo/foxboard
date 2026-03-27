@@ -13,11 +13,19 @@ describe("auth callbacks", () => {
   beforeEach(() => {
     syncUserMock.mockReset();
     getUserByEmailMock.mockReset();
+    process.env.ALLOWED_EMAIL_DOMAIN = "example.com";
   });
 
   it("allows only the configured company domain on sign-in", async () => {
     await expect(handleSignIn({ user: { email: "user@example.com" } })).resolves.toBe(true);
     await expect(handleSignIn({ user: { email: "user@gmail.com" } })).resolves.toBe(false);
+  });
+
+  it("allows any configured company domain on sign-in", async () => {
+    process.env.ALLOWED_EMAIL_DOMAIN = "foxcatcher.com.au,labelium.com";
+
+    await expect(handleSignIn({ user: { email: "user@labelium.com" } })).resolves.toBe(true);
+    await expect(handleSignIn({ user: { email: "user@foxcatcher.com.au" } })).resolves.toBe(true);
   });
 
   it("writes the user record on fresh sign-in", async () => {
