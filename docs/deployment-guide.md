@@ -32,6 +32,8 @@
 - Quote `GMAIL_QUERY` in `/etc/foxboard.env` because it contains spaces.
 - Auth.js trusts the host headers forwarded by Caddy, so no extra `AUTH_TRUST_HOST` env is required.
 - `ALLOWED_EMAIL_DOMAIN` can contain one domain or a comma-separated list.
+- `APP_URL` is treated as the canonical Auth.js URL and is copied into `AUTH_URL` and `NEXTAUTH_URL` at runtime.
+- Google OAuth redirect URI should be `${APP_URL}/api/auth/callback/google`.
 
 ## Timezone
 

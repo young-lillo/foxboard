@@ -68,6 +68,7 @@ GMAIL_QUERY='from:(noreply@thetradedesk.com) subject:("Report Available: Daily R
 - first users default to `viewer`
 - admin must be promoted in DB
 - production auth trusts the host headers forwarded by Caddy
+- `APP_URL` is also used as the canonical Auth.js base URL
 
 Example:
 

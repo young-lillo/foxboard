@@ -7,6 +7,9 @@ import {
   handleSession,
   handleSignIn
 } from "@/modules/auth/callbacks";
+import { applyAuthRuntimeEnv } from "@/modules/auth/runtime-config";
+
+applyAuthRuntimeEnv();
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   secret: env.AUTH_SECRET,
