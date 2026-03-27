@@ -321,13 +321,13 @@ strong,
 .filters-grid {
   display: grid;
   gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  align-items: end;
+  grid-template-columns: 150px 150px minmax(220px, 1fr) minmax(220px, 1fr) minmax(220px, 1fr);
 }
 
 .field {
   display: grid;
   gap: 8px;
+  min-width: 0;
 }
 
 .field label {
@@ -335,13 +335,15 @@ strong,
   font-weight: 700;
 }
 
-.field-actions {
+.filters-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: flex-end;
 }
 
 .input {
+  width: 100%;
   min-height: 48px;
   padding: 10px 14px;
   border: 2px solid var(--border);
@@ -382,6 +384,7 @@ strong,
   border-bottom: 1px solid rgba(17, 17, 17, 0.12);
   text-align: left;
   vertical-align: top;
+  word-break: break-word;
 }
 
 .table thead th {
@@ -392,6 +395,33 @@ strong,
 
 .table tbody tr:hover {
   background: rgba(38, 228, 17, 0.08);
+}
+
+.table--flagged {
+  min-width: 1220px;
+}
+
+.table-col-contract {
+  min-width: 300px;
+}
+
+.table-col-campaign {
+  min-width: 320px;
+}
+
+.table-col-adgroup {
+  min-width: 260px;
+}
+
+.table-col-date,
+.table-col-number {
+  min-width: 110px;
+  white-space: nowrap;
+}
+
+.table-gap-negative {
+  color: var(--danger);
+  font-weight: 700;
 }
 
 .status-pill {
@@ -478,6 +508,10 @@ strong,
   .brand-lockup {
     align-items: flex-start;
   }
+
+  .filters-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -499,5 +533,17 @@ strong,
 
   .table {
     font-size: 14px;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-actions {
+    justify-content: stretch;
+  }
+
+  .filters-actions .button {
+    width: 100%;
   }
 }

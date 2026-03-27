@@ -18,37 +18,36 @@ export function FiltersForm({ searchParams }: FiltersFormProps) {
           </a>
         ))}
       </div>
-      <form action="/dashboard" className="filters-grid">
-        <div className="field">
-          <label htmlFor="from">From</label>
-          <input className="input" defaultValue={valueOf(searchParams.from)} id="from" name="from" type="date" />
-        </div>
-        <div className="field">
-          <label htmlFor="to">To</label>
-          <input className="input" defaultValue={valueOf(searchParams.to)} id="to" name="to" type="date" />
-        </div>
-        <div className="field">
-          <label htmlFor="campaign">Campaign</label>
-          <input className="input" defaultValue={valueOf(searchParams.campaign)} id="campaign" name="campaign" />
-        </div>
-        <div className="field">
-          <label htmlFor="adgroup">Adgroup</label>
-          <input className="input" defaultValue={valueOf(searchParams.adgroup)} id="adgroup" name="adgroup" />
-        </div>
-        <div className="field">
-          <label htmlFor="contract">Contract</label>
-          <input className="input" defaultValue={valueOf(searchParams.contract)} id="contract" name="contract" />
-        </div>
-        <div className="field field-actions">
-          <label>Run</label>
-          <div className="field-actions">
-            <button className="button" type="submit">
-              Apply filters
-            </button>
-            <a className="button button-secondary" href="/dashboard">
-              Clear
-            </a>
+      <form action="/dashboard" className="stack">
+        <div className="filters-grid">
+          <div className="field">
+            <label htmlFor="from">From</label>
+            <input className="input" defaultValue={valueOf(searchParams.from)} id="from" name="from" type="date" />
           </div>
+          <div className="field">
+            <label htmlFor="to">To</label>
+            <input className="input" defaultValue={valueOf(searchParams.to)} id="to" name="to" type="date" />
+          </div>
+          <div className="field">
+            <label htmlFor="contract">Contract</label>
+            <input className="input" defaultValue={valueOf(searchParams.contract)} id="contract" name="contract" />
+          </div>
+          <div className="field">
+            <label htmlFor="campaign">Campaign</label>
+            <input className="input" defaultValue={valueOf(searchParams.campaign)} id="campaign" name="campaign" />
+          </div>
+          <div className="field">
+            <label htmlFor="adgroup">Adgroup</label>
+            <input className="input" defaultValue={valueOf(searchParams.adgroup)} id="adgroup" name="adgroup" />
+          </div>
+        </div>
+        <div className="filters-actions">
+          <a className="button button-secondary" href="/dashboard">
+            Clear
+          </a>
+          <button className="button" type="submit">
+            Apply
+          </button>
         </div>
       </form>
     </section>

@@ -23,9 +23,6 @@ export function AppHeader({ role, email }: AppHeaderProps) {
           <Link className="nav-link" href="/dashboard">
             Dashboard
           </Link>
-          <Link className="nav-link" href="/imports">
-            Imports
-          </Link>
           <Link className="nav-link" href="/listen">
             Listen
           </Link>

@@ -17,12 +17,12 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
     return (
       <section className="table-card">
         <div className="row" style={{ justifyContent: "space-between" }}>
-          <h2 style={{ margin: 0 }}>Flagged adgroups</h2>
+          <h2 style={{ margin: 0 }}>Contracts to check</h2>
           <span className="muted">0 rows</span>
         </div>
         <div className="empty-state">
-          No flagged rows matched the current filters. Tighten the date range or
-          switch to a broader preset if you expected results.
+          No rows matched the current filters. Widen the date range or clear a
+          text filter if you expected impacted contracts here.
         </div>
       </section>
     );
@@ -31,20 +31,20 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
   return (
     <section className="table-card">
       <div className="row" style={{ justifyContent: "space-between" }}>
-        <h2 style={{ margin: 0 }}>Flagged adgroups</h2>
-        <span className="muted">{rows.length} rows</span>
+        <h2 style={{ margin: 0 }}>Contracts to check</h2>
+        <span className="muted">{rows.length} rows on this page</span>
       </div>
       <div className="table-wrap">
-        <table className="table">
+        <table className="table table--flagged">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Campaign</th>
-              <th>Adgroup</th>
-              <th>Contract</th>
-              <th>Bid CPM</th>
-              <th>Media CPM</th>
-              <th>Status</th>
+              <th className="table-col-contract">Contract</th>
+              <th className="table-col-campaign">Campaign</th>
+              <th className="table-col-adgroup">Adgroup</th>
+              <th className="table-col-date">Date</th>
+              <th className="table-col-number">Bid CPM</th>
+              <th className="table-col-number">Media CPM</th>
+              <th className="table-col-number">Gap</th>
             </tr>
           </thead>
           <tbody>
@@ -52,20 +52,14 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
               <tr
                 key={`${formatMetricDate(row.metric_date)}-${row.campaign}-${row.adgroup}-${row.contract}`}
               >
-                <td>{formatMetricDate(row.metric_date)}</td>
-                <td>{row.campaign}</td>
-                <td>{row.adgroup}</td>
-                <td>{row.contract}</td>
-                <td>{row.bid_cpm.toFixed(2)}</td>
-                <td>{row.media_cpm.toFixed(2)}</td>
-                <td>
-                  <span
-                    className={`status-pill ${
-                      row.needs_check ? "status-pill--needs-check" : "status-pill--ok"
-                    }`}
-                  >
-                    {row.needs_check ? "Needs check" : "OK"}
-                  </span>
+                <td className="table-col-contract">{row.contract}</td>
+                <td className="table-col-campaign">{row.campaign}</td>
+                <td className="table-col-adgroup">{row.adgroup}</td>
+                <td className="table-col-date">{formatMetricDate(row.metric_date)}</td>
+                <td className="table-col-number">{row.bid_cpm.toFixed(2)}</td>
+                <td className="table-col-number">{row.media_cpm.toFixed(2)}</td>
+                <td className="table-col-number table-gap-negative">
+                  {(row.media_cpm - row.bid_cpm).toFixed(2)}
                 </td>
               </tr>
             ))}
