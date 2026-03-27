@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 
 export default async function HomePage() {
   const session = await auth();
+  const hasAppSession = Boolean(session?.user?.email && session.user.id);
 
   return (
     <main className="shell stack">
@@ -15,10 +16,10 @@ export default async function HomePage() {
           which adgroups need checking.
         </p>
         <div className="row">
-          <Link className="button" href={session ? "/dashboard" : "/login"}>
-            {session ? "Open dashboard" : "Sign in"}
+          <Link className="button" href={hasAppSession ? "/dashboard" : "/login"}>
+            {hasAppSession ? "Open dashboard" : "Sign in"}
           </Link>
-          <Link className="button button-secondary" href={session ? "/listen" : "/login"}>
+          <Link className="button button-secondary" href={hasAppSession ? "/listen" : "/login"}>
             Open listening room
           </Link>
           <Link className="button button-secondary" href="/imports">
