@@ -10,19 +10,28 @@ type AppHeaderProps = {
 
 export function AppHeader({ role, email }: AppHeaderProps) {
   return (
-    <header className="card row" style={{ justifyContent: "space-between" }}>
-      <div className="row">
-        <Link href="/dashboard">
-          <strong>Foxboard</strong>
+    <header className="nav-shell stack">
+      <div className="brand-lockup">
+        <Link className="brand-link" href="/dashboard">
+          <span className="brand-badge">FOX</span>
+          <span className="brand-meta">
+            <strong className="brand-title">Foxboard</strong>
+            <span className="muted small-copy">Internal campaign watchtower</span>
+          </span>
         </Link>
-        <Link className="muted" href="/listen">
-          Listen
-        </Link>
-        <Link className="muted" href="/imports">
-          Import history
-        </Link>
+        <nav className="nav-links">
+          <Link className="nav-link" href="/dashboard">
+            Dashboard
+          </Link>
+          <Link className="nav-link" href="/imports">
+            Imports
+          </Link>
+          <Link className="nav-link" href="/listen">
+            Listen
+          </Link>
+        </nav>
       </div>
-      <div className="row">
+      <div className="row" style={{ justifyContent: "space-between" }}>
         <SessionUser email={email} role={role} />
         <form
           action={async () => {
@@ -30,7 +39,7 @@ export function AppHeader({ role, email }: AppHeaderProps) {
             await signOut({ redirectTo: "/login" });
           }}
         >
-          <button className="button" type="submit">
+          <button className="button button-secondary" type="submit">
             Sign out
           </button>
         </form>

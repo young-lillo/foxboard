@@ -24,6 +24,37 @@ export default async function DashboardPage({
   return (
     <main className="shell stack">
       <AppHeader email={session.user.email!} role={session.user.role} />
+      <section className="grid hero-panel hero-panel--split">
+        <div className="stack">
+          <span className="eyebrow">Campaign Health Feed</span>
+          <h1>Review the adgroups where pricing discipline is slipping.</h1>
+          <p className="lead">
+            This board surfaces the exact rows where Media CPM is overtaking Bid
+            CPM, so you can re-check setup before the issue spreads across the
+            campaign.
+          </p>
+          <div className="chip-row">
+            <span className="chip">90-day report history</span>
+            <span className="chip">Direct CSV ingestion</span>
+            <span className="chip chip-dark">Live internal dashboard</span>
+          </div>
+        </div>
+        <aside className="mini-card">
+          <span className="eyebrow">Today&apos;s Focus</span>
+          <div className="rule-box">
+            <span className="muted">Flagged rows</span>
+            <strong>{summary.flagged_rows.toLocaleString()}</strong>
+          </div>
+          <div className="rule-box">
+            <span className="muted">Tracked campaigns</span>
+            <strong>{summary.campaign_count.toLocaleString()}</strong>
+          </div>
+          <div className="rule-box rule-callout">
+            <span className="muted">Core rule</span>
+            <strong>Flag when Media CPM &gt; Bid CPM.</strong>
+          </div>
+        </aside>
+      </section>
       <SummaryCards
         adgroupCount={summary.adgroup_count}
         campaignCount={summary.campaign_count}

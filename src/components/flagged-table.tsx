@@ -13,8 +13,23 @@ type FlaggedRow = {
 };
 
 export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
+  if (!rows.length) {
+    return (
+      <section className="table-card">
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <h2 style={{ margin: 0 }}>Flagged adgroups</h2>
+          <span className="muted">0 rows</span>
+        </div>
+        <div className="empty-state">
+          No flagged rows matched the current filters. Tighten the date range or
+          switch to a broader preset if you expected results.
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="card">
+    <section className="table-card">
       <div className="row" style={{ justifyContent: "space-between" }}>
         <h2 style={{ margin: 0 }}>Flagged adgroups</h2>
         <span className="muted">{rows.length} rows</span>
@@ -42,7 +57,11 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
                 <td>{row.bid_cpm.toFixed(2)}</td>
                 <td>{row.media_cpm.toFixed(2)}</td>
                 <td>
-                  <span className={`badge ${row.needs_check ? "badge-danger" : "badge-success"}`}>
+                  <span
+                    className={`status-pill ${
+                      row.needs_check ? "status-pill--needs-check" : "status-pill--ok"
+                    }`}
+                  >
                     {row.needs_check ? "Needs check" : "OK"}
                   </span>
                 </td>

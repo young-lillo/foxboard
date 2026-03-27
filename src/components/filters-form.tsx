@@ -10,15 +10,15 @@ export function FiltersForm({ searchParams }: FiltersFormProps) {
   ];
 
   return (
-    <div className="stack">
-      <div className="row">
+    <section className="card filters-card stack">
+      <div className="chip-row">
         {presets.map((preset) => (
           <a className="chip" href={presetHref(preset.days)} key={preset.label}>
-            {preset.label}
+            Last {preset.label}
           </a>
         ))}
       </div>
-      <form className="card row" action="/dashboard">
+      <form action="/dashboard" className="filters-grid">
         <div className="field">
           <label htmlFor="from">From</label>
           <input className="input" defaultValue={valueOf(searchParams.from)} id="from" name="from" type="date" />
@@ -39,11 +39,19 @@ export function FiltersForm({ searchParams }: FiltersFormProps) {
           <label htmlFor="contract">Contract</label>
           <input className="input" defaultValue={valueOf(searchParams.contract)} id="contract" name="contract" />
         </div>
-        <button className="button" type="submit">
-          Apply
-        </button>
+        <div className="field field-actions">
+          <label>Run</label>
+          <div className="field-actions">
+            <button className="button" type="submit">
+              Apply filters
+            </button>
+            <a className="button button-secondary" href="/dashboard">
+              Clear
+            </a>
+          </div>
+        </div>
       </form>
-    </div>
+    </section>
   );
 }
 

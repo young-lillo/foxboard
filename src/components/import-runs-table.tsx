@@ -11,7 +11,11 @@ type ImportRun = {
 
 export function ImportRunsTable({ runs }: { runs: ImportRun[] }) {
   return (
-    <section className="card">
+    <section className="table-card">
+      <div className="row" style={{ justifyContent: "space-between" }}>
+        <h2 style={{ margin: 0 }}>Latest import runs</h2>
+        <span className="muted">{runs.length} recent runs</span>
+      </div>
       <div className="table-wrap">
         <table className="table">
           <thead>
@@ -27,7 +31,9 @@ export function ImportRunsTable({ runs }: { runs: ImportRun[] }) {
           <tbody>
             {runs.map((run) => (
               <tr key={run.id}>
-                <td>{run.status}</td>
+                <td>
+                  <span className={`status-pill ${statusClassName(run.status)}`}>{run.status}</span>
+                </td>
                 <td>{new Date(run.reportReceivedAt).toLocaleString()}</td>
                 <td>{run.rowCount}</td>
                 <td>{run.importedRowCount}</td>
@@ -40,4 +46,20 @@ export function ImportRunsTable({ runs }: { runs: ImportRun[] }) {
       </div>
     </section>
   );
+}
+
+function statusClassName(status: string) {
+  if (status === "imported") {
+    return "status-pill--imported";
+  }
+
+  if (status === "failed") {
+    return "status-pill--failed";
+  }
+
+  if (status === "downloaded") {
+    return "status-pill--downloaded";
+  }
+
+  return "status-pill--pending";
 }

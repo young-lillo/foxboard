@@ -18,7 +18,7 @@ export function Pagination({
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
-    <div className="row" style={{ justifyContent: "space-between" }}>
+    <div className="pagination-shell">
       <span className="muted">
         Showing page {page} of {totalPages} ({total} rows)
       </span>

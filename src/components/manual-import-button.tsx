@@ -9,7 +9,7 @@ export function ManualImportButton() {
   return (
     <div className="row">
       <button
-        className="button button-secondary"
+        className="button"
         disabled={isPending}
         onClick={() =>
           startTransition(async () => {
@@ -36,7 +36,7 @@ export function ManualImportButton() {
       >
         {isPending ? "Running..." : "Run import now"}
       </button>
-      {message ? <span className="muted">{message}</span> : null}
+      {message ? <span className="status-pill status-pill--downloaded">{message}</span> : null}
     </div>
   );
 }
