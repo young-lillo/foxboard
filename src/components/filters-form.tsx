@@ -10,7 +10,7 @@ export function FiltersForm({ searchParams }: FiltersFormProps) {
   ];
 
   return (
-    <section className="card filters-card stack">
+    <section className="filters-card filters-card--plain stack">
       <div className="chip-row">
         {presets.map((preset) => (
           <a className="chip" href={presetHref(preset.days)} key={preset.label}>
@@ -27,18 +27,6 @@ export function FiltersForm({ searchParams }: FiltersFormProps) {
           <div className="field">
             <label htmlFor="to">To</label>
             <input className="input" defaultValue={valueOf(searchParams.to)} id="to" name="to" type="date" />
-          </div>
-          <div className="field">
-            <label htmlFor="contract">Contract</label>
-            <input className="input" defaultValue={valueOf(searchParams.contract)} id="contract" name="contract" />
-          </div>
-          <div className="field">
-            <label htmlFor="campaign">Campaign</label>
-            <input className="input" defaultValue={valueOf(searchParams.campaign)} id="campaign" name="campaign" />
-          </div>
-          <div className="field">
-            <label htmlFor="adgroup">Adgroup</label>
-            <input className="input" defaultValue={valueOf(searchParams.adgroup)} id="adgroup" name="adgroup" />
           </div>
         </div>
         <div className="filters-actions">

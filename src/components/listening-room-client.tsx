@@ -15,12 +15,14 @@ export function ListeningRoomClient({
   role: Role;
 }) {
   const controller = useListeningRoomController(initialState, role);
+  const currentItem = controller.roomState.playback.currentItem;
+  const showPlayer = controller.hasJoined && !!currentItem;
 
   return (
     <section className="grid listen-grid">
       <div className="stack">
         <NowPlayingCard
-          currentItem={controller.roomState.playback.currentItem}
+          currentItem={currentItem}
           hasJoined={controller.hasJoined}
           isAdmin={role === "admin"}
           listenerCount={controller.roomState.listenerCount}
@@ -31,10 +33,14 @@ export function ListeningRoomClient({
           playbackStatus={controller.roomState.playback.playbackStatus}
         />
         <section className="card stack">
-          <div ref={controller.playerHostRef} />
+          <div ref={controller.playerHostRef} style={{ display: showPlayer ? undefined : "none" }} />
           {!controller.hasJoined ? (
             <p className="muted" style={{ margin: 0 }}>
               Join first so the browser can start audio reliably.
+            </p>
+          ) : !currentItem ? (
+            <p className="muted" style={{ margin: 0 }}>
+              Nothing is playing yet. Queued songs start here after an admin presses Play.
             </p>
           ) : null}
           {controller.isRefreshing ? (

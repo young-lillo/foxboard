@@ -15,17 +15,22 @@ export default async function DashboardPage({
   const resolvedSearchParams = await searchParams;
   const filters = parseMetricsFilters(resolvedSearchParams);
   const flagged = await getFlaggedAdgroups(filters);
+  const dashboardSearchParams = {
+    from: filters.from,
+    to: filters.to,
+    limit: filters.limit === 25 ? undefined : String(filters.limit)
+  };
 
   return (
-    <main className="shell stack">
+    <main className="shell shell--dashboard stack">
       <AppHeader email={session.user.email!} role={session.user.role} />
-      <FiltersForm searchParams={resolvedSearchParams} />
+      <FiltersForm searchParams={dashboardSearchParams} />
       <FlaggedTable rows={flagged.rows} />
       <Pagination
         basePath="/dashboard"
         limit={filters.limit}
         page={filters.page}
-        searchParams={resolvedSearchParams}
+        searchParams={dashboardSearchParams}
         total={flagged.total}
       />
     </main>

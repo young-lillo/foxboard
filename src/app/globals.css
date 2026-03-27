@@ -68,6 +68,10 @@ strong,
   padding: 28px 20px 72px;
 }
 
+.shell--dashboard {
+  max-width: none;
+}
+
 .stack {
   display: grid;
   gap: 18px;
@@ -321,7 +325,7 @@ strong,
 .filters-grid {
   display: grid;
   gap: 14px;
-  grid-template-columns: 150px 150px minmax(220px, 1fr) minmax(220px, 1fr) minmax(220px, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .field {
@@ -367,6 +371,15 @@ strong,
   gap: 16px;
 }
 
+.filters-card--plain,
+.table-card--plain {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .table-wrap {
   overflow-x: auto;
 }
@@ -398,19 +411,19 @@ strong,
 }
 
 .table--flagged {
-  min-width: 1220px;
+  min-width: 0;
 }
 
 .table-col-contract {
-  min-width: 300px;
+  min-width: 180px;
 }
 
 .table-col-campaign {
-  min-width: 320px;
+  min-width: 220px;
 }
 
 .table-col-adgroup {
-  min-width: 260px;
+  min-width: 200px;
 }
 
 .table-col-date,
@@ -545,5 +558,11 @@ strong,
 
   .filters-actions .button {
     width: 100%;
+  }
+
+  .filters-card--plain,
+  .table-card--plain {
+    padding: 0;
+    border-radius: 0;
   }
 }

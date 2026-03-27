@@ -15,21 +15,21 @@ type FlaggedRow = {
 export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
   if (!rows.length) {
     return (
-      <section className="table-card">
+      <section className="table-card table-card--plain">
         <div className="row" style={{ justifyContent: "space-between" }}>
           <h2 style={{ margin: 0 }}>Contracts to check</h2>
           <span className="muted">0 rows</span>
         </div>
         <div className="empty-state">
-          No rows matched the current filters. Widen the date range or clear a
-          text filter if you expected impacted contracts here.
+          No rows matched the current filters. Widen the date range or clear the
+          date filters if you expected impacted contracts here.
         </div>
       </section>
     );
   }
 
   return (
-    <section className="table-card">
+    <section className="table-card table-card--plain">
       <div className="row" style={{ justifyContent: "space-between" }}>
         <h2 style={{ margin: 0 }}>Contracts to check</h2>
         <span className="muted">{rows.length} rows on this page</span>
@@ -52,9 +52,9 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
               <tr
                 key={`${formatMetricDate(row.metric_date)}-${row.campaign}-${row.adgroup}-${row.contract}`}
               >
-                <td className="table-col-contract">{row.contract}</td>
-                <td className="table-col-campaign">{row.campaign}</td>
-                <td className="table-col-adgroup">{row.adgroup}</td>
+                <td className="table-col-contract">{displayValue(row.contract)}</td>
+                <td className="table-col-campaign">{displayValue(row.campaign)}</td>
+                <td className="table-col-adgroup">{displayValue(row.adgroup)}</td>
                 <td className="table-col-date">{formatMetricDate(row.metric_date)}</td>
                 <td className="table-col-number">{row.bid_cpm.toFixed(2)}</td>
                 <td className="table-col-number">{row.media_cpm.toFixed(2)}</td>
@@ -76,4 +76,8 @@ function formatMetricDate(value: string | Date) {
   }
 
   return value;
+}
+
+function displayValue(value: string) {
+  return value.trim() || "-";
 }

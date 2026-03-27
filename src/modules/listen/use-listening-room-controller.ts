@@ -68,6 +68,7 @@ export function useListeningRoomController(initialState: ListeningRoomSnapshot, 
     const currentItem = roomState.playback.currentItem;
     if (!currentItem) {
       loadedVideoIdRef.current = null;
+      setPlayerError("");
       return;
     }
     const expectedPosition = getExpectedPosition(roomState, snapshotReceivedAtRef.current);
@@ -155,7 +156,9 @@ export function useListeningRoomController(initialState: ListeningRoomSnapshot, 
     },
     async addSong(url: string) {
       await mutateSnapshot("/api/listen/queue", { url });
-      setStatusMessage("Queued");
+      setStatusMessage(
+        role === "admin" ? "Queued. Press Play to start playback." : "Queued. Waiting for an admin to press Play."
+      );
     },
     play() {
       startTransition(() => {
