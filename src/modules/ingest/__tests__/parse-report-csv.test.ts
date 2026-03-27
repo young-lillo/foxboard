@@ -24,4 +24,25 @@ describe("parseReportCsv", () => {
     expect(rows[0].mediaCpm).toBe(1000);
     expect(rows[0].needsCheck).toBe(false);
   });
+
+  it("parses The Trade Desk header aliases", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "foxboard-"));
+    const filePath = path.join(dir, "ttd-report.csv");
+
+    await writeFile(
+      filePath,
+      [
+        "Advertiser Currency Code,Date,Inventory Contract,Campaign,Ad Group,Impressions,Bids,Total Bid Amount (Adv Currency),Media Cost (Adv Currency)",
+        "AUD,02/25/2026,Contract TTD,Camp TTD,Ad Group TTD,0,834,50.445126814828975,0"
+      ].join("\n")
+    );
+
+    const rows = await parseReportCsv(filePath);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].contract).toBe("Contract TTD");
+    expect(rows[0].adgroup).toBe("Ad Group TTD");
+    expect(rows[0].totalBidAmounts).toBe(50.445126814828975);
+    expect(rows[0].mediaCost).toBe(0);
+  });
 });

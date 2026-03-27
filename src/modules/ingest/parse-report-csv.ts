@@ -2,11 +2,12 @@ import { readFile } from "node:fs/promises";
 
 import { parse } from "csv-parse/sync";
 
-import { REQUIRED_COLUMNS } from "@/modules/ingest/csv-columns";
+import { COLUMN_ALIASES, REQUIRED_FIELDS } from "@/modules/ingest/csv-columns";
 import { ReportRow } from "@/modules/ingest/types";
 import { safeCpm, shouldCheckMetric } from "@/modules/metrics/formulas";
 
 type CsvRecord = Record<string, string>;
+type ResolvedColumns = Record<(typeof REQUIRED_FIELDS)[number], string>;
 
 export async function parseReportCsv(filePath: string) {
   const input = await readFile(filePath, "utf8");
@@ -16,38 +17,45 @@ export async function parseReportCsv(filePath: string) {
     trim: true
   }) as CsvRecord[];
 
-  validateHeaders(records[0]);
+  const resolvedColumns = resolveColumns(records[0]);
 
-  return records.map(toReportRow);
+  return records.map((record) => toReportRow(record, resolvedColumns));
 }
 
-function validateHeaders(record?: CsvRecord) {
+function resolveColumns(record?: CsvRecord): ResolvedColumns {
   if (!record) {
     throw new Error("CSV is empty");
   }
 
   const keys = Object.keys(record);
+  const resolved = {} as ResolvedColumns;
 
-  for (const column of REQUIRED_COLUMNS) {
-    if (!keys.includes(column)) {
-      throw new Error(`Missing CSV column: ${column}`);
+  for (const field of REQUIRED_FIELDS) {
+    const match = COLUMN_ALIASES[field].find((candidate) => keys.includes(candidate));
+
+    if (!match) {
+      throw new Error(`Missing CSV column for ${field}`);
     }
+
+    resolved[field] = match;
   }
+
+  return resolved;
 }
 
-function toReportRow(record: CsvRecord): ReportRow {
-  const impressions = toNumber(record["Impressions"]);
-  const bids = toNumber(record["Bids"]);
-  const totalBidAmounts = toNumber(record["Total Bid Amounts"]);
-  const mediaCost = toNumber(record["Media Cost"]);
+function toReportRow(record: CsvRecord, columns: ResolvedColumns): ReportRow {
+  const impressions = toNumber(record[columns.impressions]);
+  const bids = toNumber(record[columns.bids]);
+  const totalBidAmounts = toNumber(record[columns.totalBidAmounts]);
+  const mediaCost = toNumber(record[columns.mediaCost]);
   const bidCpm = safeCpm(totalBidAmounts, bids);
   const mediaCpm = safeCpm(mediaCost, impressions);
 
   return {
-    metricDate: normalizeDate(record["Date"]),
-    campaign: record["Campaign"],
-    adgroup: record["Adgroup"],
-    contract: record["Contract"],
+    metricDate: normalizeDate(record[columns.metricDate]),
+    campaign: record[columns.campaign],
+    adgroup: record[columns.adgroup],
+    contract: record[columns.contract],
     impressions,
     bids,
     totalBidAmounts,
