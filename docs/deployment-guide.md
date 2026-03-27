@@ -30,6 +30,7 @@
 - Runtime services must use real env values from `/etc/foxboard.env`.
 - Do not rely on fallback defaults in production services.
 - Quote `GMAIL_QUERY` in `/etc/foxboard.env` because it contains spaces.
+- Auth.js trusts the host headers forwarded by Caddy, so no extra `AUTH_TRUST_HOST` env is required.
 
 ## Timezone
 

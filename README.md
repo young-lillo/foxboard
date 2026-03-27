@@ -67,6 +67,7 @@ GMAIL_QUERY='from:(noreply@thetradedesk.com) subject:("Report Available: Daily R
 - company domain only
 - first users default to `viewer`
 - admin must be promoted in DB
+- production auth trusts the host headers forwarded by Caddy
 
 ## Gmail Ingest Credentials
 
