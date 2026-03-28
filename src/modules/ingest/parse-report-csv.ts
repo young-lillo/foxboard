@@ -8,6 +8,7 @@ import { safeCpm, shouldCheckMetric } from "@/modules/metrics/formulas";
 
 type CsvRecord = Record<string, string>;
 type ResolvedColumns = Record<(typeof REQUIRED_FIELDS)[number], string>;
+const EMPTY_CONTRACT_VALUE = "-";
 
 export async function parseReportCsv(filePath: string) {
   const input = await readFile(filePath, "utf8");
@@ -55,7 +56,7 @@ function toReportRow(record: CsvRecord, columns: ResolvedColumns): ReportRow {
     metricDate: normalizeDate(record[columns.metricDate]),
     campaign: record[columns.campaign],
     adgroup: record[columns.adgroup],
-    contract: record[columns.contract],
+    contract: normalizeContract(record[columns.contract]),
     impressions,
     bids,
     totalBidAmounts,
@@ -93,4 +94,8 @@ function toNumber(value: string) {
   }
 
   return parsed;
+}
+
+function normalizeContract(value: string) {
+  return value.trim() || EMPTY_CONTRACT_VALUE;
 }

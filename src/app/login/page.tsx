@@ -13,12 +13,8 @@ export default async function LoginPage() {
     <main className="shell stack">
       <section className="grid hero-panel hero-panel--split">
         <div className="stack">
-          <span className="eyebrow">Company Access</span>
-          <h1>Sign in to open the daily CPM watchlist.</h1>
-          <p className="lead">
-            Use your company Google account to access the live dashboard, review
-            flagged adgroups, and keep the team on the same source of truth.
-          </p>
+          <h1>Sign in to check Contract bidding.</h1>
+          <p className="lead">Use labelium.com Google account to access</p>
           <div className="chip-row">
             <span className="chip">Google Workspace login</span>
             <span className="chip">Company domains only</span>
@@ -26,10 +22,6 @@ export default async function LoginPage() {
           </div>
         </div>
         <section className="mini-card">
-          <span className="eyebrow">Secure Entry</span>
-          <p className="muted">
-            Only addresses from the allowed company domains can access the app.
-          </p>
           <form
             action={async () => {
               "use server";

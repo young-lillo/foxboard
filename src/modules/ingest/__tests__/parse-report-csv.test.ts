@@ -45,4 +45,22 @@ describe("parseReportCsv", () => {
     expect(rows[0].totalBidAmounts).toBe(50.445126814828975);
     expect(rows[0].mediaCost).toBe(0);
   });
+
+  it("normalizes blank contract values to a dash", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "foxboard-"));
+    const filePath = path.join(dir, "blank-contract-report.csv");
+
+    await writeFile(
+      filePath,
+      [
+        "Date,Campaign,Adgroup,Contract,Impressions,Bids,Total Bid Amounts,Media Cost",
+        "2026-03-25,Camp A,Ad A,,1000,500,750,1000"
+      ].join("\n")
+    );
+
+    const rows = await parseReportCsv(filePath);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].contract).toBe("-");
+  });
 });
