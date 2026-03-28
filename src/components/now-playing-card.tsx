@@ -1,4 +1,7 @@
-import { ListeningRoomSnapshot } from "@/modules/listen/types";
+import {
+  getListeningItemTitle,
+  ListeningRoomSnapshot
+} from "@/modules/listen/types";
 
 type NowPlayingCardProps = {
   currentItem: ListeningRoomSnapshot["playback"]["currentItem"];
@@ -41,7 +44,7 @@ export function NowPlayingCard(props: NowPlayingCardProps) {
       </div>
       {props.currentItem ? (
         <div className="stack" style={{ gap: 8 }}>
-          <strong>{props.currentItem.titleSnapshot ?? "Title loads after playback starts"}</strong>
+          <strong>{getListeningItemTitle(props.currentItem)}</strong>
           <span className="muted">Added by {props.currentItem.addedByDisplayName}</span>
         </div>
       ) : (

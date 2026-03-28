@@ -3,6 +3,7 @@ import {
   HEARTBEAT_FRESH_SECONDS,
   LISTENING_ROOM_SLUG
 } from "@/modules/listen/constants";
+import { hydrateMissingTitleSnapshots } from "@/modules/listen/hydrate-missing-title-snapshots";
 import { ListeningRoomSnapshot } from "@/modules/listen/types";
 
 type RoomRow = {
@@ -117,9 +118,14 @@ export async function getListeningRoomState(): Promise<ListeningRoomSnapshot> {
     ...item,
     sortOrder: Number(item.sortOrder)
   }));
+  const hydratedTitles = await hydrateMissingTitleSnapshots(queueItems);
+  const mergedQueueItems = queueItems.map((item) => ({
+    ...item,
+    titleSnapshot: hydratedTitles.get(item.id) ?? item.titleSnapshot
+  }));
 
   const currentItem =
-    queueItems.find((item) => item.id === room.currentQueueItemId) ?? null;
+    mergedQueueItems.find((item) => item.id === room.currentQueueItemId) ?? null;
 
   return {
     room: {
@@ -138,6 +144,6 @@ export async function getListeningRoomState(): Promise<ListeningRoomSnapshot> {
       updatedAt: room.updatedAt,
       currentItem
     },
-    queue: queueItems.filter((item) => item.id !== room.currentQueueItemId)
+    queue: mergedQueueItems.filter((item) => item.id !== room.currentQueueItemId)
   };
 }

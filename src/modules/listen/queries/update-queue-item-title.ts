@@ -16,11 +16,8 @@ export async function updateQueueItemTitle(input: UpdateQueueItemTitleInput) {
           else title_snapshot
         end,
         updated_at = now()
-      from listening_room_playback_state
       where listening_room_queue_items.id = $1
         and listening_room_queue_items.room_id = $3
-        and listening_room_playback_state.room_id = $3
-        and listening_room_playback_state.current_queue_item_id = listening_room_queue_items.id
       returning title_snapshot as "titleSnapshot"
     `,
     [input.queueItemId, input.titleSnapshot, input.roomId]
