@@ -47,7 +47,7 @@ export async function advanceQueueItem(input: AdvanceQueueItemInput) {
         from listening_room_queue_items
         where room_id = $1
           and status = 'queued'
-        order by sort_order asc
+        order by random()
         limit 1
         for update
       `,

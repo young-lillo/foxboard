@@ -357,12 +357,25 @@ strong,
 }
 
 .queue-track {
-  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .queue-track__image {
   width: 96px;
   flex: 0 0 96px;
+}
+
+.queue-track__body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.queue-track__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .track-title {
@@ -636,5 +649,10 @@ strong,
   .queue-track__image {
     width: 84px;
     flex-basis: 84px;
+  }
+
+  .queue-track__actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 }

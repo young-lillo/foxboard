@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 
 import { auth } from "@/auth";
 import { LISTENING_ROOM_ID } from "@/modules/listen/constants";
+import { fetchYoutubeVideoTitle } from "@/modules/listen/fetch-youtube-video-title";
 import {
   InvalidYoutubeUrlError,
   parseYoutubeVideoUrl
@@ -21,11 +22,13 @@ export async function POST(request: NextRequest) {
   try {
     const body = queueSongSchema.parse(await request.json());
     const parsedUrl = parseYoutubeVideoUrl(body.url);
+    const titleSnapshot = await fetchYoutubeVideoTitle(parsedUrl.canonicalUrl);
 
     await addQueueItem({
       roomId: LISTENING_ROOM_ID,
       youtubeVideoId: parsedUrl.videoId,
       sourceUrl: parsedUrl.canonicalUrl,
+      titleSnapshot,
       addedByUserId: session.user.id
     });
 

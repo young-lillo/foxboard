@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 
 import { HEARTBEAT_INTERVAL_MS, LISTEN_POLL_INTERVAL_MS, PLAYER_DRIFT_TOLERANCE_SECONDS } from "@/modules/listen/constants";
-import { fetchListeningRoomState, postListeningHeartbeat, postListeningRoomSnapshot } from "@/modules/listen/client-api";
+import {
+  deleteListeningQueueItem,
+  fetchListeningRoomState,
+  postListeningHeartbeat,
+  postListeningRoomSnapshot
+} from "@/modules/listen/client-api";
 import { ListeningRoomSnapshot } from "@/modules/listen/types";
 import { useStableEvent } from "@/modules/listen/use-stable-event";
 import { createYoutubePlayer, YoutubePlayerController } from "@/modules/listen/youtube-player";
@@ -162,6 +167,14 @@ export function useListeningRoomController(initialState: ListeningRoomSnapshot, 
       setStatusMessage(
         role === "admin" ? "Queued. Press Play to start playback." : "Queued. Waiting for an admin to press Play."
       );
+    },
+    async removeSong(queueItemId: string) {
+      try {
+        applySnapshot(await deleteListeningQueueItem(queueItemId));
+        setStatusMessage("Removed from playlist.");
+      } catch (error) {
+        setStatusMessage(error instanceof Error ? error.message : "Could not remove queue item");
+      }
     },
     play() {
       startTransition(() => {

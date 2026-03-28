@@ -35,3 +35,16 @@ export async function postListeningHeartbeat(body: Record<string, unknown>) {
     body: JSON.stringify(body)
   });
 }
+
+export async function deleteListeningQueueItem(queueItemId: string) {
+  const response = await fetch(`/api/listen/queue/${queueItemId}`, {
+    method: "DELETE"
+  });
+  const payload = await response.json();
+
+  if (!response.ok) {
+    throw new Error(payload.error ?? "Could not remove queue item");
+  }
+
+  return payload as ListeningRoomSnapshot;
+}

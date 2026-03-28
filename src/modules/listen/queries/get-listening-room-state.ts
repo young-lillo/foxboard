@@ -31,6 +31,8 @@ type QueueRow = {
   createdAt: string;
 };
 
+const PLAYLIST_HISTORY_LIMIT = 20;
+
 export async function getListeningRoomState(): Promise<ListeningRoomSnapshot> {
   const roomResult = await pool.query<RoomRow>(
     `
@@ -88,7 +90,30 @@ export async function getListeningRoomState(): Promise<ListeningRoomSnapshot> {
     [room.id]
   );
 
-  const queueItems = queueResult.rows.map((item) => ({
+  const historyResult = await pool.query<QueueRow>(
+    `
+      select
+        item.id,
+        item.room_id as "roomId",
+        item.youtube_video_id as "youtubeVideoId",
+        item.source_url as "sourceUrl",
+        item.title_snapshot as "titleSnapshot",
+        item.added_by_user_id as "addedByUserId",
+        coalesce(nullif(users.name, ''), users.email) as "addedByDisplayName",
+        item.status,
+        item.sort_order as "sortOrder",
+        item.created_at as "createdAt"
+      from listening_room_queue_items item
+      join users on users.id = item.added_by_user_id
+      where item.room_id = $1
+        and item.status in ('played', 'skipped')
+      order by item.updated_at desc, item.sort_order desc
+      limit $2
+    `,
+    [room.id, PLAYLIST_HISTORY_LIMIT]
+  );
+
+  const queueItems = [...queueResult.rows, ...historyResult.rows].map((item) => ({
     ...item,
     sortOrder: Number(item.sortOrder)
   }));
@@ -113,6 +138,6 @@ export async function getListeningRoomState(): Promise<ListeningRoomSnapshot> {
       updatedAt: room.updatedAt,
       currentItem
     },
-    queue: queueItems.filter((item) => item.status === "queued")
+    queue: queueItems.filter((item) => item.id !== room.currentQueueItemId)
   };
 }

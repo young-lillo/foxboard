@@ -32,6 +32,14 @@ npm run cleanup:imports
 update users set role = 'admin' where email = 'user@example.com';
 ```
 
+## Listening Room Notes
+
+- track names are fetched on queue add when YouTube oEmbed returns a title
+- if title lookup fails, the UI may temporarily fall back to the source URL until playback heartbeat updates the snapshot
+- completed tracks stay in playlist history until an admin removes them
+- playback chooses the next pending track in shuffled order, not strict insertion order
+- only admins can remove playlist items through the web UI
+
 Allowed login domains can be set in `/etc/foxboard.env`:
 
 ```env

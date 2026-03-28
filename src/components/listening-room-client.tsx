@@ -93,7 +93,11 @@ export function ListeningRoomClient({
       </div>
       <div className="stack">
         <AddSongForm onAdd={controller.addSong} />
-        <ListeningRoomQueue items={controller.roomState.queue} />
+        <ListeningRoomQueue
+          isAdmin={role === "admin"}
+          items={controller.roomState.queue}
+          onRemove={controller.removeSong}
+        />
       </div>
     </section>
   );
