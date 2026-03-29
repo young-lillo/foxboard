@@ -2,13 +2,19 @@ import { readFile } from "node:fs/promises";
 
 import { parse } from "csv-parse/sync";
 
-import { COLUMN_ALIASES, REQUIRED_FIELDS } from "@/modules/ingest/csv-columns";
+import {
+  COLUMN_ALIASES,
+  OPTIONAL_FIELDS,
+  REQUIRED_FIELDS
+} from "@/modules/ingest/csv-columns";
 import { ReportRow } from "@/modules/ingest/types";
 import { safeCpm, shouldCheckMetric } from "@/modules/metrics/formulas";
 
 type CsvRecord = Record<string, string>;
-type ResolvedColumns = Record<(typeof REQUIRED_FIELDS)[number], string>;
-const EMPTY_CONTRACT_VALUE = "-";
+type RequiredField = (typeof REQUIRED_FIELDS)[number];
+type OptionalField = (typeof OPTIONAL_FIELDS)[number];
+type ResolvedColumns = Record<RequiredField, string> & Partial<Record<OptionalField, string>>;
+const EMPTY_DIMENSION_VALUE = "-";
 
 export async function parseReportCsv(filePath: string) {
   const input = await readFile(filePath, "utf8");
@@ -41,6 +47,14 @@ function resolveColumns(record?: CsvRecord): ResolvedColumns {
     resolved[field] = match;
   }
 
+  for (const field of OPTIONAL_FIELDS) {
+    const match = COLUMN_ALIASES[field].find((candidate) => keys.includes(candidate));
+
+    if (match) {
+      resolved[field] = match;
+    }
+  }
+
   return resolved;
 }
 
@@ -53,10 +67,13 @@ function toReportRow(record: CsvRecord, columns: ResolvedColumns): ReportRow {
   const mediaCpm = safeCpm(mediaCost, impressions);
 
   return {
+    advertiser: normalizeDimension(
+      columns.advertiser ? record[columns.advertiser] : undefined
+    ),
     metricDate: normalizeDate(record[columns.metricDate]),
     campaign: record[columns.campaign],
     adgroup: record[columns.adgroup],
-    contract: normalizeContract(record[columns.contract]),
+    contract: normalizeDimension(record[columns.contract]),
     impressions,
     bids,
     totalBidAmounts,
@@ -96,6 +113,6 @@ function toNumber(value: string) {
   return parsed;
 }
 
-function normalizeContract(value: string) {
-  return value.trim() || EMPTY_CONTRACT_VALUE;
+function normalizeDimension(value?: string) {
+  return value?.trim() || EMPTY_DIMENSION_VALUE;
 }

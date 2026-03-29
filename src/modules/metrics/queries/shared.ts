@@ -9,6 +9,11 @@ export function buildMetricWhere(filters: MetricsFilters) {
     filters.to ?? defaultDateTo()
   ];
 
+  if (filters.advertiser) {
+    values.push(filters.advertiser);
+    clauses.push(`advertiser = $${values.length}`);
+  }
+
   if (filters.campaign) {
     values.push(filters.campaign);
     clauses.push(`campaign = $${values.length}`);

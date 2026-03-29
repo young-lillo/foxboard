@@ -3,6 +3,12 @@ import { MetricsFilters } from "@/modules/metrics/filters";
 import { buildMetricWhere } from "@/modules/metrics/queries/shared";
 
 export async function getMetricFilterOptions(filters: MetricsFilters) {
+  const advertiserWhere = buildMetricWhere({
+    ...filters,
+    advertiser: undefined,
+    page: 1,
+    limit: 100
+  });
   const campaignWhere = buildMetricWhere({
     ...filters,
     campaign: undefined,
@@ -15,7 +21,16 @@ export async function getMetricFilterOptions(filters: MetricsFilters) {
     page: 1,
     limit: 100
   });
-  const [campaignsResult, contractsResult] = await Promise.all([
+  const [advertisersResult, campaignsResult, contractsResult] = await Promise.all([
+    pool.query<{ value: string }>(
+      `
+        select distinct advertiser as value
+        from campaign_daily_metrics
+        where ${advertiserWhere.text}
+        order by advertiser asc
+      `,
+      advertiserWhere.values
+    ),
     pool.query<{ value: string }>(
       `
         select distinct campaign as value
@@ -37,6 +52,7 @@ export async function getMetricFilterOptions(filters: MetricsFilters) {
   ]);
 
   return {
+    advertisers: advertisersResult.rows.map((row) => row.value),
     campaigns: campaignsResult.rows.map((row) => row.value),
     contracts: contractsResult.rows.map((row) => row.value)
   };

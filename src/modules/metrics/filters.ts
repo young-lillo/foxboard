@@ -5,6 +5,7 @@ const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const metricsFilterSchema = z.object({
   from: dateSchema.optional(),
   to: dateSchema.optional(),
+  advertiser: z.string().optional(),
   campaign: z.string().optional(),
   adgroup: z.string().optional(),
   contract: z.string().optional(),

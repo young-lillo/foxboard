@@ -9,6 +9,7 @@ type FlaggedRow = {
   media_cost: number;
   bid_cpm: number;
   media_cpm: number;
+  gap: number;
   needs_check: boolean;
 };
 
@@ -59,7 +60,7 @@ export function FlaggedTable({ rows }: { rows: FlaggedRow[] }) {
                 <td className="table-col-number">{row.bid_cpm.toFixed(2)}</td>
                 <td className="table-col-number">{row.media_cpm.toFixed(2)}</td>
                 <td className="table-col-number table-gap-negative">
-                  {(row.media_cpm - row.bid_cpm).toFixed(2)}
+                  {row.gap.toFixed(2)}
                 </td>
               </tr>
             ))}

@@ -1,4 +1,5 @@
 export type ReportRow = {
+  advertiser: string;
   metricDate: string;
   campaign: string;
   adgroup: string;

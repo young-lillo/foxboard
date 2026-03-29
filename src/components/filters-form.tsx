@@ -1,10 +1,12 @@
 type FiltersFormProps = {
+  advertiserOptions: string[];
   campaignOptions: string[];
   contractOptions: string[];
   searchParams: Record<string, string | string[] | undefined>;
 };
 
 export function FiltersForm({
+  advertiserOptions,
   campaignOptions,
   contractOptions,
   searchParams
@@ -26,13 +28,24 @@ export function FiltersForm({
       </div>
       <form action="/dashboard" className="stack">
         <div className="filters-grid">
-          <div className="field">
+          <div className="field field--date">
             <label htmlFor="from">From</label>
             <input className="input" defaultValue={valueOf(searchParams.from)} id="from" name="from" type="date" />
           </div>
-          <div className="field">
+          <div className="field field--date">
             <label htmlFor="to">To</label>
             <input className="input" defaultValue={valueOf(searchParams.to)} id="to" name="to" type="date" />
+          </div>
+          <div className="field">
+            <label htmlFor="advertiser">Advertiser</label>
+            <select className="input" defaultValue={valueOf(searchParams.advertiser)} id="advertiser" name="advertiser">
+              <option value="">All advertisers</option>
+              {advertiserOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="field">
             <label htmlFor="contract">Contract</label>
@@ -83,6 +96,7 @@ function presetHref(
   from.setDate(to.getDate() - (days - 1));
   const params = new URLSearchParams();
 
+  copyParam(params, "advertiser", searchParams.advertiser);
   copyParam(params, "contract", searchParams.contract);
   copyParam(params, "campaign", searchParams.campaign);
   copyParam(params, "limit", searchParams.limit);

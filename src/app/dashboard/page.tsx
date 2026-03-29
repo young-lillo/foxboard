@@ -22,6 +22,7 @@ export default async function DashboardPage({
   const dashboardSearchParams = {
     from: filters.from,
     to: filters.to,
+    advertiser: filters.advertiser,
     contract: filters.contract,
     campaign: filters.campaign,
     limit: filters.limit === 25 ? undefined : String(filters.limit)
@@ -31,6 +32,7 @@ export default async function DashboardPage({
     <main className="shell shell--dashboard stack">
       <AppHeader email={session.user.email!} role={session.user.role} />
       <FiltersForm
+        advertiserOptions={filterOptions.advertisers}
         campaignOptions={filterOptions.campaigns}
         contractOptions={filterOptions.contracts}
         searchParams={dashboardSearchParams}

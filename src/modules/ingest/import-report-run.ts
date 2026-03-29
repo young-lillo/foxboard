@@ -73,6 +73,7 @@ export async function importMessage(message: GmailMessage) {
           insert into campaign_daily_metrics (
             import_run_id,
             id,
+            advertiser,
             metric_date,
             campaign,
             adgroup,
@@ -87,11 +88,12 @@ export async function importMessage(message: GmailMessage) {
             updated_at
           )
           values (
-            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, now()
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, now()
           )
           on conflict (metric_date, campaign, adgroup, contract)
           do update set
             import_run_id = excluded.import_run_id,
+            advertiser = excluded.advertiser,
             impressions = excluded.impressions,
             bids = excluded.bids,
             total_bid_amounts = excluded.total_bid_amounts,
@@ -104,6 +106,7 @@ export async function importMessage(message: GmailMessage) {
         [
           importRunId,
           randomUUID(),
+          row.advertiser,
           row.metricDate,
           row.campaign,
           row.adgroup,

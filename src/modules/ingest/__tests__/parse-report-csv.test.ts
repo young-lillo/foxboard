@@ -32,14 +32,15 @@ describe("parseReportCsv", () => {
     await writeFile(
       filePath,
       [
-        "Advertiser Currency Code,Date,Inventory Contract,Campaign,Ad Group,Impressions,Bids,Total Bid Amount (Adv Currency),Media Cost (Adv Currency)",
-        "AUD,02/25/2026,Contract TTD,Camp TTD,Ad Group TTD,0,834,50.445126814828975,0"
+        "Advertiser,Advertiser Currency Code,Date,Inventory Contract,Campaign,Ad Group,Impressions,Bids,Total Bid Amount (Adv Currency),Media Cost (Adv Currency)",
+        "TTD Advertiser,AUD,02/25/2026,Contract TTD,Camp TTD,Ad Group TTD,0,834,50.445126814828975,0"
       ].join("\n")
     );
 
     const rows = await parseReportCsv(filePath);
 
     expect(rows).toHaveLength(1);
+    expect(rows[0].advertiser).toBe("TTD Advertiser");
     expect(rows[0].contract).toBe("Contract TTD");
     expect(rows[0].adgroup).toBe("Ad Group TTD");
     expect(rows[0].totalBidAmounts).toBe(50.445126814828975);

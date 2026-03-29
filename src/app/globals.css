@@ -406,6 +406,11 @@ strong,
   min-width: 0;
 }
 
+.field--date {
+  justify-self: start;
+  width: min(100%, 220px);
+}
+
 .field label {
   font-size: 0.9rem;
   font-weight: 700;
@@ -626,6 +631,10 @@ strong,
 
   .filters-grid {
     grid-template-columns: 1fr;
+  }
+
+  .field--date {
+    width: 100%;
   }
 
   .filters-actions {

@@ -1,4 +1,5 @@
 export const COLUMN_ALIASES = {
+  advertiser: ["Advertiser"],
   metricDate: ["Date"],
   campaign: ["Campaign"],
   adgroup: ["Adgroup", "Ad Group"],
@@ -9,4 +10,15 @@ export const COLUMN_ALIASES = {
   mediaCost: ["Media Cost", "Media Cost (Adv Currency)"]
 } as const;
 
-export const REQUIRED_FIELDS = Object.keys(COLUMN_ALIASES) as Array<keyof typeof COLUMN_ALIASES>;
+export const REQUIRED_FIELDS = [
+  "metricDate",
+  "campaign",
+  "adgroup",
+  "contract",
+  "impressions",
+  "bids",
+  "totalBidAmounts",
+  "mediaCost"
+] as const;
+
+export const OPTIONAL_FIELDS = ["advertiser"] as const;
