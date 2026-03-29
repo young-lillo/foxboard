@@ -1,12 +1,16 @@
-import { MetricsFilters } from "@/modules/metrics/filters";
+import {
+  defaultMetricDateFrom,
+  defaultMetricDateTo,
+  MetricsFilters
+} from "@/modules/metrics/filters";
 
 export function buildMetricWhere(filters: MetricsFilters) {
   const clauses = [
     "metric_date between $1 and $2"
   ];
   const values: unknown[] = [
-    filters.from ?? defaultDateFrom(),
-    filters.to ?? defaultDateTo()
+    filters.from ?? defaultMetricDateFrom(),
+    filters.to ?? defaultMetricDateTo()
   ];
 
   if (filters.advertiser) {
@@ -37,14 +41,4 @@ export function buildMetricWhere(filters: MetricsFilters) {
     text: clauses.join(" and "),
     values
   };
-}
-
-function defaultDateFrom() {
-  const date = new Date();
-  date.setDate(date.getDate() - 29);
-  return date.toISOString().slice(0, 10);
-}
-
-function defaultDateTo() {
-  return new Date().toISOString().slice(0, 10);
 }

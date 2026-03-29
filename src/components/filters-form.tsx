@@ -12,6 +12,7 @@ export function FiltersForm({
   searchParams
 }: FiltersFormProps) {
   const presets = [
+    { label: "Yesterday", type: "yesterday" as const },
     { label: "7d", days: 7 },
     { label: "30d", days: 30 },
     { label: "90d", days: 90 }
@@ -21,8 +22,12 @@ export function FiltersForm({
     <section className="filters-card filters-card--plain stack">
       <div className="chip-row">
         {presets.map((preset) => (
-          <a className="chip" href={presetHref(preset.days, searchParams)} key={preset.label}>
-            Last {preset.label}
+          <a
+            className="chip"
+            href={presetHref(preset, searchParams)}
+            key={preset.label}
+          >
+            {"type" in preset ? preset.label : `Last ${preset.label}`}
           </a>
         ))}
       </div>
@@ -88,12 +93,10 @@ function valueOf(input?: string | string[]) {
 }
 
 function presetHref(
-  days: number,
+  preset: { label: string; type: "yesterday" } | { label: string; days: number },
   searchParams: Record<string, string | string[] | undefined>
 ) {
-  const to = new Date();
-  const from = new Date();
-  from.setDate(to.getDate() - (days - 1));
+  const { from, to } = resolvePresetRange(preset);
   const params = new URLSearchParams();
 
   copyParam(params, "advertiser", searchParams.advertiser);
@@ -104,6 +107,29 @@ function presetHref(
   params.set("to", to.toISOString().slice(0, 10));
 
   return `/dashboard?${params.toString()}`;
+}
+
+function resolvePresetRange(
+  preset: { label: string; type: "yesterday" } | { label: string; days: number }
+) {
+  const to = new Date();
+
+  if ("type" in preset) {
+    to.setDate(to.getDate() - 1);
+
+    return {
+      from: to,
+      to
+    };
+  }
+
+  const from = new Date(to);
+  from.setDate(to.getDate() - (preset.days - 1));
+
+  return {
+    from,
+    to
+  };
 }
 
 function copyParam(
