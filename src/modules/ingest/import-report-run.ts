@@ -53,7 +53,7 @@ export async function importMessage(message: GmailMessage) {
       set file_hash = $2,
           file_path = $3,
           status = 'downloaded',
-          updated_at = now()
+          updated_at = clock_timestamp()
       where id = $1
     `,
     [importRunId, fileHash, filePath]
@@ -128,7 +128,7 @@ export async function importMessage(message: GmailMessage) {
         set status = 'imported',
             row_count = $2,
             imported_row_count = $2,
-            updated_at = now()
+            updated_at = clock_timestamp()
         where id = $1
       `,
       [importRunId, rows.length]
@@ -151,7 +151,7 @@ export async function importMessage(message: GmailMessage) {
         update import_runs
         set status = 'failed',
             error_message = $2,
-            updated_at = now()
+            updated_at = clock_timestamp()
         where id = $1
       `,
       [importRunId, error instanceof Error ? error.message : String(error)]

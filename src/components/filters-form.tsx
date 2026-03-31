@@ -1,7 +1,11 @@
+import type { DashboardImportFreshness } from "@/modules/metrics/queries/get-dashboard-import-freshness";
+
 type FiltersFormProps = {
   advertiserOptions: string[];
   campaignOptions: string[];
   contractOptions: string[];
+  importFreshness: DashboardImportFreshness | null;
+  importFreshnessUnavailable: boolean;
   searchParams: Record<string, string | string[] | undefined>;
 };
 
@@ -9,6 +13,8 @@ export function FiltersForm({
   advertiserOptions,
   campaignOptions,
   contractOptions,
+  importFreshness,
+  importFreshnessUnavailable,
   searchParams
 }: FiltersFormProps) {
   const presets = [
@@ -41,6 +47,11 @@ export function FiltersForm({
             <label htmlFor="to">To</label>
             <input className="input" defaultValue={valueOf(searchParams.to)} id="to" name="to" type="date" />
           </div>
+        </div>
+        <p className="muted small-copy" style={{ margin: 0 }}>
+          {formatImportFreshness(importFreshness, importFreshnessUnavailable)}
+        </p>
+        <div className="filters-grid">
           <div className="field">
             <label htmlFor="advertiser">Advertiser</label>
             <select className="input" defaultValue={valueOf(searchParams.advertiser)} id="advertiser" name="advertiser">
@@ -144,4 +155,34 @@ function copyParam(
   }
 
   params.set(key, resolvedValue);
+}
+
+const IMPORT_TIME_FORMATTER = new Intl.DateTimeFormat("en-AU", {
+  day: "2-digit",
+  hour: "numeric",
+  hour12: true,
+  minute: "2-digit",
+  month: "short",
+  timeZone: "Australia/Melbourne",
+  timeZoneName: "short",
+  year: "numeric"
+});
+
+function formatImportFreshness(
+  importFreshness: DashboardImportFreshness | null,
+  importFreshnessUnavailable: boolean
+) {
+  if (importFreshnessUnavailable) {
+    return "Import freshness unavailable right now.";
+  }
+
+  if (!importFreshness) {
+    return "No successful CSV import yet.";
+  }
+
+  return `Database updated: ${formatTimestamp(importFreshness.databaseUpdatedAt)}. ${importFreshness.sourceUpdatedLabel}: ${formatTimestamp(importFreshness.sourceUpdatedAt)}.`;
+}
+
+function formatTimestamp(value: string) {
+  return IMPORT_TIME_FORMATTER.format(new Date(value));
 }

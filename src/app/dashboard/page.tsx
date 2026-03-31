@@ -4,6 +4,7 @@ import { FlaggedTable } from "@/components/flagged-table";
 import { Pagination } from "@/components/pagination";
 import { requireSession } from "@/modules/auth/guards";
 import { parseMetricsFilters } from "@/modules/metrics/filters";
+import { getDashboardImportFreshness } from "@/modules/metrics/queries/get-dashboard-import-freshness";
 import { getMetricFilterOptions } from "@/modules/metrics/queries/get-filter-options";
 import { getFlaggedAdgroups } from "@/modules/metrics/queries/get-flagged-adgroups";
 
@@ -15,9 +16,12 @@ export default async function DashboardPage({
   const session = await requireSession();
   const resolvedSearchParams = await searchParams;
   const filters = parseMetricsFilters(resolvedSearchParams);
-  const [flagged, filterOptions] = await Promise.all([
+  const [flagged, filterOptions, importFreshnessResult] = await Promise.all([
     getFlaggedAdgroups(filters),
-    getMetricFilterOptions(filters)
+    getMetricFilterOptions(filters),
+    getDashboardImportFreshness()
+      .then((importFreshness) => ({ importFreshness, unavailable: false }))
+      .catch(() => ({ importFreshness: null, unavailable: true }))
   ]);
   const dashboardSearchParams = {
     from: filters.from,
@@ -35,6 +39,8 @@ export default async function DashboardPage({
         advertiserOptions={filterOptions.advertisers}
         campaignOptions={filterOptions.campaigns}
         contractOptions={filterOptions.contracts}
+        importFreshness={importFreshnessResult.importFreshness}
+        importFreshnessUnavailable={importFreshnessResult.unavailable}
         searchParams={dashboardSearchParams}
       />
       <FlaggedTable rows={flagged.rows} />
