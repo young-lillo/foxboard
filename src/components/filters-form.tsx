@@ -1,4 +1,6 @@
+import { ManualImportButton } from "@/components/manual-import-button";
 import type { DashboardImportFreshness } from "@/modules/metrics/queries/get-dashboard-import-freshness";
+import type { Role } from "@/types";
 
 type FiltersFormProps = {
   advertiserOptions: string[];
@@ -6,6 +8,7 @@ type FiltersFormProps = {
   contractOptions: string[];
   importFreshness: DashboardImportFreshness | null;
   importFreshnessUnavailable: boolean;
+  role: Role;
   searchParams: Record<string, string | string[] | undefined>;
 };
 
@@ -15,13 +18,13 @@ export function FiltersForm({
   contractOptions,
   importFreshness,
   importFreshnessUnavailable,
+  role,
   searchParams
 }: FiltersFormProps) {
   const presets = [
     { label: "Yesterday", type: "yesterday" as const },
     { label: "7d", days: 7 },
-    { label: "30d", days: 30 },
-    { label: "90d", days: 90 }
+    { label: "30d", days: 30 }
   ];
 
   return (
@@ -36,6 +39,14 @@ export function FiltersForm({
             {"type" in preset ? preset.label : `Last ${preset.label}`}
           </a>
         ))}
+        {role === "admin" ? (
+          <ManualImportButton
+            buttonClassName="chip"
+            idleLabel="Refresh data"
+            pendingLabel="Refreshing..."
+            wrapperClassName="chip-row"
+          />
+        ) : null}
       </div>
       <form action="/dashboard" className="stack">
         <div className="filters-grid">

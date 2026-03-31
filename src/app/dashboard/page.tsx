@@ -41,6 +41,7 @@ export default async function DashboardPage({
         contractOptions={filterOptions.contracts}
         importFreshness={importFreshnessResult.importFreshness}
         importFreshnessUnavailable={importFreshnessResult.unavailable}
+        role={session.user.role}
         searchParams={dashboardSearchParams}
       />
       <FlaggedTable rows={flagged.rows} />

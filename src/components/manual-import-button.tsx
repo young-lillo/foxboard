@@ -2,14 +2,26 @@
 
 import { useState, useTransition } from "react";
 
-export function ManualImportButton() {
+type ManualImportButtonProps = {
+  buttonClassName?: string;
+  idleLabel?: string;
+  pendingLabel?: string;
+  wrapperClassName?: string;
+};
+
+export function ManualImportButton({
+  buttonClassName = "button",
+  idleLabel = "Run import now",
+  pendingLabel = "Running...",
+  wrapperClassName = "row"
+}: ManualImportButtonProps) {
   const [message, setMessage] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
   return (
-    <div className="row">
+    <div className={wrapperClassName}>
       <button
-        className="button"
+        className={buttonClassName}
         disabled={isPending}
         onClick={() =>
           startTransition(async () => {
@@ -34,7 +46,7 @@ export function ManualImportButton() {
         }
         type="button"
       >
-        {isPending ? "Running..." : "Run import now"}
+        {isPending ? pendingLabel : idleLabel}
       </button>
       {message ? <span className="status-pill status-pill--downloaded">{message}</span> : null}
     </div>
