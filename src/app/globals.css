@@ -400,6 +400,21 @@ strong,
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
+.filters-grid--dashboard {
+  grid-template-columns:
+    minmax(160px, 220px)
+    minmax(160px, 220px)
+    minmax(220px, 1fr)
+    minmax(220px, 1fr)
+    minmax(220px, 1fr);
+  align-items: end;
+}
+
+.filters-grid--dashboard .field--date {
+  justify-self: stretch;
+  width: auto;
+}
+
 .field {
   display: grid;
   gap: 8px;
@@ -600,6 +615,10 @@ strong,
   }
 
   .filters-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filters-grid--dashboard {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

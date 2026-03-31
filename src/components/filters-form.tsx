@@ -49,7 +49,7 @@ export function FiltersForm({
         ) : null}
       </div>
       <form action="/dashboard" className="stack">
-        <div className="filters-grid">
+        <div className="filters-grid filters-grid--dashboard">
           <div className="field field--date">
             <label htmlFor="from">From</label>
             <input className="input" defaultValue={valueOf(searchParams.from)} id="from" name="from" type="date" />
@@ -58,11 +58,6 @@ export function FiltersForm({
             <label htmlFor="to">To</label>
             <input className="input" defaultValue={valueOf(searchParams.to)} id="to" name="to" type="date" />
           </div>
-        </div>
-        <p className="muted small-copy" style={{ margin: 0 }}>
-          {formatImportFreshness(importFreshness, importFreshnessUnavailable)}
-        </p>
-        <div className="filters-grid">
           <div className="field">
             <label htmlFor="advertiser">Advertiser</label>
             <select className="input" defaultValue={valueOf(searchParams.advertiser)} id="advertiser" name="advertiser">
@@ -97,6 +92,9 @@ export function FiltersForm({
             </select>
           </div>
         </div>
+        <p className="muted small-copy" style={{ margin: 0 }}>
+          {formatImportFreshness(importFreshness, importFreshnessUnavailable)}
+        </p>
         <div className="filters-actions">
           <a className="button button-secondary" href="/dashboard">
             Clear
